@@ -32,8 +32,8 @@
   --secondary-foreground: 0 0% 9%;
   --muted: 199 6% 93%;
   --muted-foreground: 0 0% 45%;
-  --accent: 199 8% 94%;
-  --accent-foreground: 0 0% 9%;
+  --accent: 142 71% 45%;
+  --accent-foreground: 0 0% 98%;
   --destructive: 0 84% 42%;
   --destructive-foreground: 0 0% 98%;
   --input: 0 0% 85%;
@@ -43,7 +43,7 @@
   --chart-3: 262 52% 35%;
   --chart-4: 32 95% 35%;
   --chart-5: 340 82% 35%;
-  --font-sans: Open Sans, sans-serif;
+  --font-sans: Inter, sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: Menlo, monospace;
   --radius: .5rem;
@@ -116,7 +116,7 @@
   --secondary-foreground: 0 0% 98%;
   --muted: 199 8% 17%;
   --muted-foreground: 0 0% 63%;
-  --accent: 199 10% 15%;
+  --accent: 142 71% 45%;
   --accent-foreground: 0 0% 98%;
   --destructive: 0 84% 42%;
   --destructive-foreground: 0 0% 98%;
