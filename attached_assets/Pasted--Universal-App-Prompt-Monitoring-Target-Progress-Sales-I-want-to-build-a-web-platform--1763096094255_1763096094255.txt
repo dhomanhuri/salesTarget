@@ -1,0 +1,124 @@
+### 💡 Universal App Prompt: Monitoring Target & Progress Sales
+
+I want to build a **web platform** that helps **Admin, GM, and AM (Account Manager)** monitor **sales targets** and track **customer progress** end-to-end. It should feel **clean, cepat, dan presentable** and be optimized for **web (desktop-first with responsive mobile)**.
+
+---
+
+### Project Name:
+QuotaTrackr – Sales Target & Progress
+
+---
+
+### Target Audience:
+• Admin (pusat data & kontrol)  
+• GM / Head of Sales (monitor departemen & tim AM)  
+• AM / Account Manager (input prospect & update progress)
+
+---
+
+### Core Features and Pages:
+
+#### ✅ Authentication & RBAC
+• Login email/username + password.  
+• Role-based access control (Admin, GM, AM) dengan guard per route.  
+• Reset password: Admin untuk semua user; GM untuk AM di bawahnya; AM hanya profil sendiri.  
+• After login, redirect ke dashboard sesuai role.
+
+#### ✅ User Management
+• Admin: CRUD GM & AM, set Department untuk GM, assign AM ke GM.  
+• GM: lihat dan (opsional) CRUD AM di bawahnya.  
+• AM: edit profil sendiri.  
+• Hierarki data: Admin → GM → AM (scoping query by role).
+
+#### ✅ Target Management
+• Admin: set target per Department (opsional) & per AM (Rp).  
+• GM: set target untuk AM di bawahnya.  
+• AM: melihat target pribadi & total nilai potensi.  
+• Tabel + grafik perbandingan target vs actual/progress.
+
+#### ✅ Customer Management (AM)
+• CRUD calon customer: Nama perusahaan, PIC, Kontak, Nominal potensi (Rp), Estimasi closing, Status (Prospect / On Going / Negotiation / Closed Won / Closed Lost).  
+• Visibilitas: AM pembuat + GM terkait + Admin.
+
+#### ✅ Progress Tracking (AM)
+• Log progress per customer: Tanggal, Deskripsi kegiatan, Status terbaru, Upload file (opsional).  
+• Timeline/history per customer (urut tanggal).  
+• Presentation Mode untuk AM: list customer, timeline, status, nominal potensi (UI bersih tanpa gangguan).
+
+#### ✅ Dashboards
+• **Admin Dashboard**: total target seluruh AM/departemen, total potensi aktual, list AM dengan pencapaian, grafik target vs actual, breakdown per AM.  
+• **GM Dashboard**: total target departemen, daftar AM & pencapaian, list customer per AM, grafik target vs actual.  
+• **AM Dashboard**: target pribadi, total potensi, status breakdown, reminder customer tanpa progress > X hari (opsional).
+
+#### ✅ Reporting
+• Laporan target vs progress (per AM, per GM, per departemen, total perusahaan).  
+• Laporan customer detail & aktivitas progress.  
+• Format: tabel & grafik, export PDF/Excel (opsional).
+
+---
+
+### Tech Stack (Recommended Defaults):
+• **Frontend:** Vite, TypeScript, React, shadcn/ui components, Tailwind CSS  
+• **Backend & Storage:** Supabase (Postgres, Row-Level Security untuk hierarki Admin→GM→AM)  
+• **Auth:** Supabase Auth (email/password) + OTP/Magic Link opsional
+
+---
+
+### Design Preferences:
+• Font: Inter  
+• Colors:
+  - Primary: `#0EA5E9` (sky)
+  - Accent: `#22C55E` (emerald)
+  - Backgrounds: putih bersih, abu-abu lembut
+• Layout: Mobile-first, card-based, modern UI dengan whitespace
+
+---
+
+### Data Model (singkat, untuk scaffolding):
+• departments(id, name)  
+• users(id, role['ADMIN','GM','AM'], department_id?, gm_id?, name, email, password_hash)  
+• targets(id, user_id(AM), period (YYYY-MM), amount_rp)  
+• customers(id, am_id, company_name, pic, contact, potential_rp, est_close_date, status)  
+• progresses(id, customer_id, am_id, date, note, status, file_url?)  
+• aggregates/materialized views (opsional) untuk dashboard cepat
+
+RLS (contoh aturan):
+• AM hanya bisa akses `customers` & `progresses` miliknya.  
+• GM bisa akses data milik AM yang `gm_id = GM.id`.  
+• Admin akses semua.
+
+---
+
+### Acceptance & Non-Functional:
+• Currency Rp di input & tampilan (formatting locale-id).  
+• Dashboard load < 3 detik; query cepat hingga 10k records (indexing + pagination).  
+• Password encrypted; validasi input; proteksi XSS/SQLi.  
+• UI responsif; Presentasi Mode untuk AM.  
+• Skalabel untuk banyak AM/GM tanpa ubah arsitektur.
+
+---
+
+### Critical User Flows:
+• **Admin**: Login → Kelola GM & AM → Set target → Lihat dashboard & report.  
+• **GM**: Login → Kelola AM (opsional) → Set target AM → Lihat progress AM & customer → Dashboard.  
+• **AM**: Login → Tambah customer → Input progress → Lihat target & dashboard → Presentation Mode.
+
+---
+
+### Build Tasks (prioritas sprint 1):
+1) Setup project (Vite + React TS + Tailwind + shadcn/ui), Supabase project & Auth.  
+2) Schema & RLS untuk users/departments/customers/targets/progresses.  
+3) Auth routes + ProtectedLayout + RBAC guards.  
+4) AM: CRUD customer + progress timeline + presentation mode.  
+5) Target management (Admin/GM set, AM view) + currency formatting.  
+6) Dashboards (AM, GM, Admin) dengan grafik target vs actual.  
+7) Reporting tabel + export CSV (PDF/Excel opsional).  
+8) Perf: indexing, pagination, caching ringan (SWR).
+
+---
+
+### UX Notes:
+• Navigasi kiri: Dashboard, Targets, Customers, Reports, Admin (conditional by role).  
+• Cards ringkas, grafik Recharts, tabel DataTable dengan filter by status/date/AM.  
+• Presentation Mode: full-bleed, font besar, minim distraksi.
+
